@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProductReviewAungAndBryant.Server.Data;
 
@@ -11,9 +12,11 @@ using ProductReviewAungAndBryant.Server.Data;
 namespace ProductReviewAungAndBryant.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240118072503_AddApplicationTables")]
+    partial class AddApplicationTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -379,9 +382,6 @@ namespace ProductReviewAungAndBryant.Server.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -390,6 +390,9 @@ namespace ProductReviewAungAndBryant.Server.Data.Migrations
 
                     b.Property<DateTime>("DateUpdated")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("PcPartBrand")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PcPartName")
                         .HasColumnType("nvarchar(max)");
@@ -451,13 +454,16 @@ namespace ProductReviewAungAndBryant.Server.Data.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("ProductReviewAungAndBryant.Shared.Domain.Reviewer", b =>
+            modelBuilder.Entity("ProductReviewAungAndBryant.Shared.Domain.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccountStatus")
+                        .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -471,37 +477,15 @@ namespace ProductReviewAungAndBryant.Server.Data.Migrations
                     b.Property<int>("Rank")
                         .HasColumnType("int");
 
-                    b.Property<string>("ReviewerName")
+                    b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UpdatedBy")
+                    b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reviewer");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 1, 22, 20, 40, 27, 511, DateTimeKind.Local).AddTicks(6909),
-                            DateUpdated = new DateTime(2024, 1, 22, 20, 40, 27, 511, DateTimeKind.Local).AddTicks(6922),
-                            Rank = 0,
-                            ReviewerName = "Koike12",
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 1, 22, 20, 40, 27, 511, DateTimeKind.Local).AddTicks(6925),
-                            DateUpdated = new DateTime(2024, 1, 22, 20, 40, 27, 511, DateTimeKind.Local).AddTicks(6926),
-                            Rank = 1,
-                            ReviewerName = "AnotherUser",
-                            UpdatedBy = "System"
-                        });
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

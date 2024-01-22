@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using ProductReviewAungAndBryant.Server.Configurations.Entities;
 using ProductReviewAungAndBryant.Server.Models;
+using ProductReviewAungAndBryant.Shared.Domain;
 
 namespace ProductReviewAungAndBryant.Server.Data
 {
@@ -12,6 +14,19 @@ namespace ProductReviewAungAndBryant.Server.Data
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
+        }
+
+        public DbSet<Review> Reviews { get; set; } 
+
+        public DbSet<PcPart> PcParts { get; set; } 
+
+        public DbSet<Reviewer> Reviewer {  get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.ApplyConfiguration(new ReviewerSeedConfiguration());
         }
     }
 }
