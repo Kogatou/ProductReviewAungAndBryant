@@ -8,7 +8,7 @@ namespace ProductReviewAungAndBryant.Shared.Domain
 {
     public class Review : BaseDomainModel
     {
-        public int ReviewID { get; set; }
+       
         public string? Name { get; set; }
         public string? ReviewText {  get; set; }
 
@@ -16,6 +16,6 @@ namespace ProductReviewAungAndBryant.Shared.Domain
 
         public DateTime ReviewDate { get; set; }
 
-        public int UserId{ get; set; }
+        public int ReviewerId{ get; set; }
     }
 }

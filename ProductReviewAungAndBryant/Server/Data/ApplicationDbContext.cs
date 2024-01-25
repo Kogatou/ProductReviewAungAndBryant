@@ -20,13 +20,19 @@ namespace ProductReviewAungAndBryant.Server.Data
 
         public DbSet<PcPart> PcParts { get; set; } 
 
-        public DbSet<Reviewer> Reviewer {  get; set; }
+        public DbSet<Reviewer> Reviewers {  get; set; }
+
+        public DbSet<Category> Categorys { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
             builder.ApplyConfiguration(new ReviewerSeedConfiguration());
+            builder.ApplyConfiguration(new PcPartSeedConfiguration());
+            builder.ApplyConfiguration(new ReviewSeedConfiguration());
+            builder.ApplyConfiguration(new CategorySeedConfiguration());
         }
     }
 }

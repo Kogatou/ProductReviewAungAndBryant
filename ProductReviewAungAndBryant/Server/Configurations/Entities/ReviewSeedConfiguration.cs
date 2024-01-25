@@ -12,13 +12,12 @@ namespace ProductReviewAungAndBryant.Server.Configurations.Entities
             builder.HasData(
                 new Review
                 {
-                    Id = 1, // Assuming the Review entity has an Id property
-                    ReviewID = 1,
+                    Id=1,                  
                     Name = "Review1",
                     ReviewText = "This is the first review.",
                     PcPartId = 1,
                     ReviewDate = DateTime.Now,
-                    UserId = 1,
+                    ReviewerId = 1,
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now,
                     CreatedBy = "System",
@@ -26,13 +25,12 @@ namespace ProductReviewAungAndBryant.Server.Configurations.Entities
                 },
                 new Review
                 {
-                    Id = 2, // Assuming the Review entity has an Id property
-                    ReviewID = 2,
+                    Id=2,
                     Name = "Review2",
                     ReviewText = "This is the second review.",
                     PcPartId = 2,
                     ReviewDate = DateTime.Now,
-                    UserId = 2,
+                    ReviewerId= 2,
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now,
                     CreatedBy = "System",

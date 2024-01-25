@@ -5,8 +5,7 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
 
-<AuthorizeView>
-    <Authorized>
+
 
 @* <style>
     body {background-color: #7D7D7D;}
@@ -150,10 +149,4 @@
         word-wrap: break-word;
     }
 </style>
-    </Authorized>
-    <NotAuthorized>
-        @{
-            NavigationManager.NavigateTo("/authentication/login");
-        }
-    </NotAuthorized>
-</AuthorizeView>
+

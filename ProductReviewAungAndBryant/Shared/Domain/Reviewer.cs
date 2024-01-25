@@ -8,17 +8,11 @@ namespace ProductReviewAungAndBryant.Shared.Domain
 {
     public class Reviewer :BaseDomainModel
     {
-       
-        public string? ReviewerName { get; set; }
         
-        public ReviewerRank Rank { get; set; }
+        public string? ReviewerName { get; set; }
+
+       public string? ReviewerEmail { get; set;}
     }
 
-    public enum ReviewerRank
-    {
-        Silver,
-        Gold,
-        Platinum,
-        Diamond,
-    }
+
 }

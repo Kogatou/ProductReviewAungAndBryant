@@ -14,7 +14,7 @@ namespace ProductReviewAungAndBryant.Server.Configurations.Entities
                 {
                     Id = 1,
                     ReviewerName = "Koike12",
-                    Rank = ReviewerRank.Silver,
+                    ReviewerEmail="Koike12@gmail.com",
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now,
                     CreatedBy = "System",
@@ -23,8 +23,8 @@ namespace ProductReviewAungAndBryant.Server.Configurations.Entities
                 new Reviewer
                 {
                     Id = 2, 
-                    ReviewerName = "AnotherUser",
-                    Rank = ReviewerRank.Gold, 
+                    ReviewerName = "Peko111",
+                    ReviewerEmail = "Peko1111@gmail.com",
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now,
                     CreatedBy = "System",
