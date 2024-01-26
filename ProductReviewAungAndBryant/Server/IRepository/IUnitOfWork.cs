@@ -15,7 +15,7 @@ namespace CarRentalManagement.Server.IRepository
         IGenericRepository<Reviewer> Reviewers { get; }
         IGenericRepository<Review> Reviews { get; }
         IGenericRepository<PcPart> PcParts { get; }
-        IGenericRepository<Category> Categorys { get; }
+        IGenericRepository<Category> Categories { get; }
        
     }
 }

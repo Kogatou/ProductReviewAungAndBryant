@@ -1,0 +1,66 @@
+﻿@page "/categories"
+@inject HttpClient Http
+
+@using CategoryModel = ProductReviewAungAndBryant.Shared.Domain
+
+<h3>Category</h3>
+
+<a href="/categories/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    New Category
+</a>
+<br />
+
+@if (categories == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>CategoryName</th>
+                <th>CategoryBrandName</th>
+                <th>CreatedBy</th>
+                <th>UpdatedBy</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var category in categories)
+            {
+                <tr>
+                    <td>@category.CategoryName</td>
+                    <td>@category.CategoryBrandName</td>
+                    <td>@category.CreatedBy</td>
+                    <td>@category.UpdatedBy</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<CategoryModel.Category> categories = new List<CategoryModel.Category>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // // Mock Data
+            // CategoryModel.Category newCategory = new CategoryModel.Category();
+            // newCategory.CategoryName = "Fun";
+            // newCategory.CategoryBrandName = "Brand 1";
+            // newCategory.CreatedBy = "Admin";
+            // newCategory.UpdatedBy = "Admin";
+
+            // categories.Add(newCategory);
+
+            categories = await Http.GetFromJsonAsync<List<CategoryModel.Category>>("api/Categories");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+}

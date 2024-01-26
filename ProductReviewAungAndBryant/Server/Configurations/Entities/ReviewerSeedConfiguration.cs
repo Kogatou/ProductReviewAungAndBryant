@@ -29,6 +29,25 @@ namespace ProductReviewAungAndBryant.Server.Configurations.Entities
                     DateUpdated = DateTime.Now,
                     CreatedBy = "System",
                     UpdatedBy = "System"
+                }, new Reviewer
+                {
+                    Id = 3,
+                    ReviewerName = "Koike123",
+                    ReviewerEmail = "Koike123@gmail.com",
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now,
+                    CreatedBy = "System",
+                    UpdatedBy = "System"
+                },
+                new Reviewer
+                {
+                    Id = 4,
+                    ReviewerName = "Peko1113",
+                    ReviewerEmail = "Peko11113@gmail.com",
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now,
+                    CreatedBy = "System",
+                    UpdatedBy = "System"
                 }
             );
         }

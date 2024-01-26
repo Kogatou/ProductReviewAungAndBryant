@@ -8,10 +8,10 @@ namespace ProductReviewAungAndBryant.Shared.Domain
 {
     public class Category : BaseDomainModel
     {
+        public string CategoryName { get; set; }
 
-        public string? CategoryName { get; set; }
+        public string CategoryBrandName { get; set; }
 
-        public string? CategoryBrandName { get; set; }
-
+        public List<PcPart>? PcParts { get; set; }
     }
 }

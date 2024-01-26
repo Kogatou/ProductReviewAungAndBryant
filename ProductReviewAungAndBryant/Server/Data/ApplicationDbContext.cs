@@ -22,7 +22,7 @@ namespace ProductReviewAungAndBryant.Server.Data
 
         public DbSet<Reviewer> Reviewers {  get; set; }
 
-        public DbSet<Category> Categorys { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

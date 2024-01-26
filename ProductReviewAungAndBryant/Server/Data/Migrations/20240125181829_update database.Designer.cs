@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProductReviewAungAndBryant.Server.Data;
 
@@ -11,9 +12,11 @@ using ProductReviewAungAndBryant.Server.Data;
 namespace ProductReviewAungAndBryant.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240125181829_update database")]
+    partial class updatedatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -406,10 +409,10 @@ namespace ProductReviewAungAndBryant.Server.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DateCreated")
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateUpdated")
+                    b.Property<DateTime>("DateUpdated")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedBy")
@@ -417,7 +420,7 @@ namespace ProductReviewAungAndBryant.Server.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categorys");
 
                     b.HasData(
                         new
@@ -426,8 +429,8 @@ namespace ProductReviewAungAndBryant.Server.Data.Migrations
                             CategoryBrandName = "Intel",
                             CategoryName = "CPU",
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(1075),
-                            DateUpdated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(1076),
+                            DateCreated = new DateTime(2024, 1, 26, 2, 18, 29, 144, DateTimeKind.Local).AddTicks(4863),
+                            DateUpdated = new DateTime(2024, 1, 26, 2, 18, 29, 144, DateTimeKind.Local).AddTicks(4863),
                             UpdatedBy = "System"
                         },
                         new
@@ -436,8 +439,8 @@ namespace ProductReviewAungAndBryant.Server.Data.Migrations
                             CategoryBrandName = "NVDIA",
                             CategoryName = "GPU",
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(1078),
-                            DateUpdated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(1078),
+                            DateCreated = new DateTime(2024, 1, 26, 2, 18, 29, 144, DateTimeKind.Local).AddTicks(4865),
+                            DateUpdated = new DateTime(2024, 1, 26, 2, 18, 29, 144, DateTimeKind.Local).AddTicks(4866),
                             UpdatedBy = "System"
                         });
                 });
@@ -457,10 +460,10 @@ namespace ProductReviewAungAndBryant.Server.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DateCreated")
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateUpdated")
+                    b.Property<DateTime>("DateUpdated")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PcPartName")
@@ -485,8 +488,8 @@ namespace ProductReviewAungAndBryant.Server.Data.Migrations
                             Id = 1,
                             CategoryId = 0,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(761),
-                            DateUpdated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(762),
+                            DateCreated = new DateTime(2024, 1, 26, 2, 18, 29, 144, DateTimeKind.Local).AddTicks(4558),
+                            DateUpdated = new DateTime(2024, 1, 26, 2, 18, 29, 144, DateTimeKind.Local).AddTicks(4559),
                             PcPartName = "Core i-9 14900KF",
                             PcPartPrice = 850f,
                             ReviewId = 0,
@@ -497,8 +500,8 @@ namespace ProductReviewAungAndBryant.Server.Data.Migrations
                             Id = 2,
                             CategoryId = 0,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(764),
-                            DateUpdated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(764),
+                            DateCreated = new DateTime(2024, 1, 26, 2, 18, 29, 144, DateTimeKind.Local).AddTicks(4561),
+                            DateUpdated = new DateTime(2024, 1, 26, 2, 18, 29, 144, DateTimeKind.Local).AddTicks(4562),
                             PcPartName = "RTX 4090",
                             PcPartPrice = 2000f,
                             ReviewId = 0,
@@ -518,10 +521,10 @@ namespace ProductReviewAungAndBryant.Server.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DateCreated")
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateUpdated")
+                    b.Property<DateTime>("DateUpdated")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -557,11 +560,11 @@ namespace ProductReviewAungAndBryant.Server.Data.Migrations
                         {
                             Id = 1,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(917),
-                            DateUpdated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(917),
+                            DateCreated = new DateTime(2024, 1, 26, 2, 18, 29, 144, DateTimeKind.Local).AddTicks(4713),
+                            DateUpdated = new DateTime(2024, 1, 26, 2, 18, 29, 144, DateTimeKind.Local).AddTicks(4713),
                             Name = "Review1",
                             PcPartId = 1,
-                            ReviewDate = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(916),
+                            ReviewDate = new DateTime(2024, 1, 26, 2, 18, 29, 144, DateTimeKind.Local).AddTicks(4712),
                             ReviewText = "This is the first review.",
                             ReviewerId = 1,
                             UpdatedBy = "System"
@@ -570,11 +573,11 @@ namespace ProductReviewAungAndBryant.Server.Data.Migrations
                         {
                             Id = 2,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(920),
-                            DateUpdated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(920),
+                            DateCreated = new DateTime(2024, 1, 26, 2, 18, 29, 144, DateTimeKind.Local).AddTicks(4716),
+                            DateUpdated = new DateTime(2024, 1, 26, 2, 18, 29, 144, DateTimeKind.Local).AddTicks(4716),
                             Name = "Review2",
                             PcPartId = 2,
-                            ReviewDate = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(919),
+                            ReviewDate = new DateTime(2024, 1, 26, 2, 18, 29, 144, DateTimeKind.Local).AddTicks(4715),
                             ReviewText = "This is the second review.",
                             ReviewerId = 2,
                             UpdatedBy = "System"
@@ -593,10 +596,10 @@ namespace ProductReviewAungAndBryant.Server.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DateCreated")
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateUpdated")
+                    b.Property<DateTime>("DateUpdated")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ReviewerEmail")
@@ -618,8 +621,8 @@ namespace ProductReviewAungAndBryant.Server.Data.Migrations
                         {
                             Id = 1,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(410),
-                            DateUpdated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(425),
+                            DateCreated = new DateTime(2024, 1, 26, 2, 18, 29, 144, DateTimeKind.Local).AddTicks(4229),
+                            DateUpdated = new DateTime(2024, 1, 26, 2, 18, 29, 144, DateTimeKind.Local).AddTicks(4242),
                             ReviewerEmail = "Koike12@gmail.com",
                             ReviewerName = "Koike12",
                             UpdatedBy = "System"
@@ -628,30 +631,10 @@ namespace ProductReviewAungAndBryant.Server.Data.Migrations
                         {
                             Id = 2,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(429),
-                            DateUpdated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(429),
+                            DateCreated = new DateTime(2024, 1, 26, 2, 18, 29, 144, DateTimeKind.Local).AddTicks(4245),
+                            DateUpdated = new DateTime(2024, 1, 26, 2, 18, 29, 144, DateTimeKind.Local).AddTicks(4246),
                             ReviewerEmail = "Peko1111@gmail.com",
                             ReviewerName = "Peko111",
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(431),
-                            DateUpdated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(431),
-                            ReviewerEmail = "Koike123@gmail.com",
-                            ReviewerName = "Koike123",
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedBy = "System",
-                            DateCreated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(432),
-                            DateUpdated = new DateTime(2024, 1, 27, 1, 12, 32, 607, DateTimeKind.Local).AddTicks(433),
-                            ReviewerEmail = "Peko11113@gmail.com",
-                            ReviewerName = "Peko1113",
                             UpdatedBy = "System"
                         });
                 });

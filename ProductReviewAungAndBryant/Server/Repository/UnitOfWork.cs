@@ -28,6 +28,8 @@ namespace ProductReviewAungAndBryant.Server.Repository
         public IGenericRepository<PcPart> PcParts => new GenericRepository<PcPart>(_context);
         public IGenericRepository<Category> Categorys => new GenericRepository<Category>(_context);
 
+        public IGenericRepository<Category> Categories => throw new NotImplementedException();
+
         public void Dispose()
         {
             _context.Dispose();

@@ -7,15 +7,19 @@ using System.Threading.Tasks;
 namespace ProductReviewAungAndBryant.Shared.Domain
 {
     public class Review : BaseDomainModel
-    {
-       
-        public string? Name { get; set; }
-        public string? ReviewText {  get; set; }
+    {        
+        public string Name { get; set; }
 
-        public int PcPartId{ get; set; }
+        public string ReviewText {  get; set; }
 
         public DateTime ReviewDate { get; set; }
 
-        public int ReviewerId{ get; set; }
+        public int PcPartId { get; set; }
+
+        public int ReviewerId { get; set; }
+
+        public virtual PcPart PcPart { get; set; }
+
+        public virtual Reviewer Reviewer { get; set; }
     }
 }

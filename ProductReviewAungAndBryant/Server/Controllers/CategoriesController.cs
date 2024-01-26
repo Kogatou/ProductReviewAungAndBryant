@@ -12,56 +12,55 @@ namespace ProductReviewAungAndBryant.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ReviewsController : ControllerBase
+    public class CategoriesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public ReviewsController(ApplicationDbContext context)
+        public CategoriesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Reviews
+        // GET: api/Categories
         [HttpGet]
-        //[Route("GetReviews")]
-        public async Task<ActionResult<IEnumerable<Review>>> Get()
+        public async Task<IEnumerable<Category>> Get()
         {
-          if (_context.Reviews == null)
+          if (_context.Categories == null)
           {
-              return NotFound();
+              return new List<Category>();
           }
-            return await _context.Reviews.ToListAsync();
+            return await _context.Categories.ToListAsync();
         }
 
-        // GET: api/Reviews/5
+        // GET: api/Categories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Review>> Get(int id)
+        public async Task<ActionResult<Category>> GetCategory(int id)
         {
-          if (_context.Reviews == null)
+          if (_context.Categories == null)
           {
               return NotFound();
           }
-            var review = await _context.Reviews.FindAsync(id);
+            var category = await _context.Categories.FindAsync(id);
 
-            if (review == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return review;
+            return category;
         }
 
-        // PUT: api/Reviews/5
+        // PUT: api/Categories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutReview(int id, Review review)
+        public async Task<IActionResult> PutCategory(int id, Category category)
         {
-            if (id != review.Id)
+            if (id != category.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(review).State = EntityState.Modified;
+            _context.Entry(category).State = EntityState.Modified;
 
             try
             {
@@ -69,7 +68,7 @@ namespace ProductReviewAungAndBryant.Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ReviewExists(id))
+                if (!CategoryExists(id))
                 {
                     return NotFound();
                 }
@@ -82,44 +81,44 @@ namespace ProductReviewAungAndBryant.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Reviews
+        // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Review>> PostReview(Review review)
+        public async Task<ActionResult<Category>> Post(Category category)
         {
-          if (_context.Reviews == null)
+          if (_context.Categories == null)
           {
-              return Problem("Entity set 'ApplicationDbContext.Reviews'  is null.");
+              return Problem("Entity set 'ApplicationDbContext.Categories'  is null.");
           }
-            _context.Reviews.Add(review);
+            _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetReview", new { id = review.Id }, review);
+            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
         }
 
-        // DELETE: api/Reviews/5
+        // DELETE: api/Categories/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteReview(int id)
+        public async Task<IActionResult> DeleteCategory(int id)
         {
-            if (_context.Reviews == null)
+            if (_context.Categories == null)
             {
                 return NotFound();
             }
-            var review = await _context.Reviews.FindAsync(id);
-            if (review == null)
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
             {
                 return NotFound();
             }
 
-            _context.Reviews.Remove(review);
+            _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ReviewExists(int id)
+        private bool CategoryExists(int id)
         {
-            return (_context.Reviews?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Categories?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
