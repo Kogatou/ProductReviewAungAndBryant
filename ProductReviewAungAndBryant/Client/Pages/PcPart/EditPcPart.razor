@@ -1,0 +1,61 @@
+﻿@page "/pcparts/edit/{id:int}"
+
+@using PcPartModel = ProductReviewAungAndBryant.Shared.Domain
+@using ProductReviewAungAndBryant.Client.Static
+
+@inject NavigationManager _navManager
+@inject HttpClient _client
+
+<h3>Edit PcPart</h3>
+
+<EditForm Model="pcpartModel">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label>PcPart Name: </label>
+        <div>
+            <InputText @bind-Value="pcpartModel.PcPartName" class="form-control" />
+            <ValidationMessage For="@(() => pcpartModel.PcPartName)" />
+        </div>
+    </div>
+    <div class="form-group mt-3">
+        <label>PcPartPrice: </label>
+        <div>
+            <InputNumber @bind-Value="pcpartModel.PcPartPrice" class="form-control" />
+            <ValidationMessage For="@(() => pcpartModel.PcPartPrice)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3" @onclick="()=>Edit()">
+        @ButtonText
+    </button>
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public int id { get; set; }
+
+    private PcPartModel.PcPart pcpartModel = new PcPartModel.PcPart();
+    public string ButtonText { get; set; } = "Update PcPart";
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            pcpartModel = await _client.GetFromJsonAsync<PcPartModel.PcPart>($"{Endpoints.PcPartsEndpoint}/GetPcPart/{id}");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+    async Task Edit()
+    {
+        //pcpartModel.CreatedBy = "11";
+        pcpartModel.UpdatedBy = "11";
+        await _client.PutAsJsonAsync($"{Endpoints.PcPartsEndpoint}/PutPcPart/{id}", pcpartModel);
+        _navManager.NavigateTo("/pcparts/");
+    }
+}

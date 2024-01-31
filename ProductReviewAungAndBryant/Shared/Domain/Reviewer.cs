@@ -12,6 +12,6 @@ namespace ProductReviewAungAndBryant.Shared.Domain
 
        public string? ReviewerEmail { get; set;}
 
-       public virtual List<Review> Reviews { get; set;}
+       public virtual List<Review>? Reviews { get; set;}
     }
 }

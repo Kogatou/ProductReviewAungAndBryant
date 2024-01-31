@@ -1,0 +1,78 @@
+﻿@page "/pcparts/add-category/{id:int}"
+
+@inject NavigationManager _navManager
+@inject HttpClient _client
+@inject IJSRuntime js
+
+@using PcPartModel = ProductReviewAungAndBryant.Shared.Domain
+@using CategoryModel = ProductReviewAungAndBryant.Shared.Domain
+@using ProductReviewAungAndBryant.Client.Static
+
+<h3>Category PcPart</h3>
+
+<div>
+    <label><b>PC Part Name :</b> @pcpartModel.PcPartName</label>
+    <label><b>PC Part Price :</b> @pcpartModel.PcPartPrice</label>
+</div>
+
+<div class="form-group">
+    <label>Category: </label>
+</div>
+
+<InputSelect @bind-Value="pcpartModel.Id">
+    <option value="">-- Select Make --</option>
+    @if(categories != null)
+    {
+        @foreach (var category in categories)
+        {
+            <option value=""> @category.CategoryName</option>
+        }
+    }
+</InputSelect>
+
+<button type="submit" class="btn btn-success mt-3" @onclick="()=>Save()">
+   Save
+</button>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+
+    private PcPartModel.PcPart pcpartModel = new PcPartModel.PcPart();
+    private List<CategoryModel.Category> categories = new List<CategoryModel.Category>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            pcpartModel = await _client.GetFromJsonAsync<PcPartModel.PcPart>($"{Endpoints.PcPartsEndpoint}/GetPcPart/{id}");
+            categories = await _client.GetFromJsonAsync<List<CategoryModel.Category>>($"{Endpoints.CategoriesEndpoint}/GetCategories");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+    async Task Save()
+    {
+        try
+        {
+            if (categories != null)
+            {
+                CategoryModel.Category category = categories.Where(w => w.Id == id).First();
+
+                var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete category - {category.CategoryBrandName}?");
+                if (confirm)
+                {
+                    await _client.DeleteAsync($"{Endpoints.CategoriesEndpoint}/DeleteCategory/{id}");
+                    await OnInitializedAsync();
+                }
+            }
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+}

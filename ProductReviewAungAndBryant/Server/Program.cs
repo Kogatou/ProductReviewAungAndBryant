@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using ProductReviewAungAndBryant.Server.Data;
 using ProductReviewAungAndBryant.Server.Models;
 using Microsoft.AspNetCore.Identity;
+using ProductReviewAungAndBryant.Server.IRepository;
+using ProductReviewAungAndBryant.Server.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,8 @@ builder.Services.AddIdentityServer()
 
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
+
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

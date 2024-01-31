@@ -13,53 +13,53 @@ namespace ProductReviewAungAndBryant.Server.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class ReviewersController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public CategoriesController(IUnitOfWork unitOfWork)
+        public ReviewersController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        // GET: api/Categories
+        // GET: api/Reviewers
         [HttpGet]
-        //[Route("GetCategories")]
-        public async Task<IActionResult> GetCategories()
+        //[Route("GetReviewers")]
+        public async Task<IActionResult> GetReviewers()
         {
-            var Categories = await _unitOfWork.Categories.GetAll();
-            return Ok(Categories);
+            var Reviewers = await _unitOfWork.Reviewers.GetAll();
+            return Ok(Reviewers);
         }
 
-        // GET: api/Categories/5
+        // GET: api/Reviewers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<Reviewer>> GetReviewer(int id)
         {
-            if (_unitOfWork.Categories == null)
+            if (_unitOfWork.Reviewers == null)
             {
                 return NotFound();
             }
-            var Category = await _unitOfWork.Categories.Get(g => g.Id == id);
+            var Reviewer = await _unitOfWork.Reviewers.Get(g => g.Id == id);
 
-            if (Category == null)
+            if (Reviewer == null)
             {
                 return NotFound();
             }
 
-            return Category;
+            return Reviewer;
         }
 
-        // PUT: api/Categories/5
+        // PUT: api/Reviewers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
+        public async Task<IActionResult> PutReviewer(int id, Reviewer Reviewer)
         {
-            if (id != category.Id)
+            if (id != Reviewer.Id)
             {
                 return BadRequest();
             }
 
-            _unitOfWork.Categories.Update(category);
+            _unitOfWork.Reviewers.Update(Reviewer);
 
             try
             {
@@ -67,7 +67,7 @@ namespace ProductReviewAungAndBryant.Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await CategoryExists(id))
+                if (!await ReviewerExists(id))
                 {
                     return NotFound();
                 }
@@ -80,45 +80,45 @@ namespace ProductReviewAungAndBryant.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Categories
+        // POST: api/Reviewers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public async Task<ActionResult<Reviewer>> PostReviewer(Reviewer Reviewer)
         {
-            if (_unitOfWork.Categories == null)
+            if (_unitOfWork.Reviewers == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Categories'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Reviewers'  is null.");
             }
-            await _unitOfWork.Categories.Insert(category);
+            await _unitOfWork.Reviewers.Insert(Reviewer);
             await _unitOfWork.Save(HttpContext);
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+            return CreatedAtAction("GetReviewer", new { id = Reviewer.Id }, Reviewer);
         }
 
-        // DELETE: api/Categories/5
+        // DELETE: api/Reviewers/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteReviewer(int id)
         {
-            if (_unitOfWork.Categories == null)
+            if (_unitOfWork.Reviewers == null)
             {
                 return NotFound();
             }
-            var Category = await _unitOfWork.Categories.Get(g => g.Id == id);
-            if (Category == null)
+            var Reviewer = await _unitOfWork.Reviewers.Get(g => g.Id == id);
+            if (Reviewer == null)
             {
                 return NotFound();
             }
 
-            await _unitOfWork.Categories.Delete(id);
+            await _unitOfWork.Reviewers.Delete(id);
             await _unitOfWork.Save(HttpContext);
 
             return NoContent();
         }
 
-        private async Task<bool> CategoryExists(int id)
+        private async Task<bool> ReviewerExists(int id)
         {
-            Category Category = await _unitOfWork.Categories.Get(e => e.Id == id);
-            return Category != null;
+            Reviewer Reviewer = await _unitOfWork.Reviewers.Get(e => e.Id == id);
+            return Reviewer != null;
         }
     }
 }

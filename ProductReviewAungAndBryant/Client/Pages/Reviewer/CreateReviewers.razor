@@ -27,7 +27,7 @@
 
     <button type="submit" class="btn btn-success mt-3" @onclick="()=>Save()">
         @ButtonText
-    </button>/
+    </button>
 </EditForm>
 
 @code {
@@ -38,6 +38,6 @@
     {
         categoryModel.CreatedBy = "Admin";
         await _client.PostAsJsonAsync($"{Endpoints.CategoriesEndpoint}/PostCategory", categoryModel);
-        _navManager.NavigateTo("/categories/");
+        _navManager.NavigateTo("/Categories/");
     }
 }

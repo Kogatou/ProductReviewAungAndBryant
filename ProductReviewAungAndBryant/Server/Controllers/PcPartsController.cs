@@ -5,159 +5,136 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ProductReviewAungAndBryant.Client.Pages.CategoryPcPart;
 using ProductReviewAungAndBryant.Server.Data;
+using ProductReviewAungAndBryant.Server.IRepository;
 using ProductReviewAungAndBryant.Shared.Domain;
 
 namespace ProductReviewAungAndBryant.Server.Controllers
 {
-    public class PcPartsController : Controller
+    [Route("api/[controller]/[action]")]
+    [ApiController]
+    public class PcPartsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public PcPartsController(ApplicationDbContext context)
+        public PcPartsController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
-        // GET: PcParts
-        public async Task<IActionResult> Index()
+        // GET: api/PcParts
+        [HttpGet]
+        //[Route("GetPcParts")]
+        public async Task<IActionResult> GetPcParts()
         {
-              return _context.PcParts != null ? 
-                          View(await _context.PcParts.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.PcParts'  is null.");
+            var pcparts = await _unitOfWork.PcParts.GetAll();
+            return Ok(pcparts);
         }
 
-        // GET: PcParts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: api/PcParts/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PcPart>> GetPcPart(int id)
         {
-            if (id == null || _context.PcParts == null)
+            if (_unitOfWork.PcParts == null)
+            {
+                return NotFound();
+            }
+            var pcpart = await _unitOfWork.PcParts.Get(g => g.Id == id);
+
+            if (pcpart == null)
             {
                 return NotFound();
             }
 
-            var pcPart = await _context.PcParts
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (pcPart == null)
-            {
-                return NotFound();
-            }
-
-            return View(pcPart);
+            return pcpart;
         }
 
-        // GET: PcParts/Create
-        public IActionResult Create()
+        // PUT: api/PcParts/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutPcPart(int id, PcPart pcpart)
         {
-            return View();
-        }
-
-        // POST: PcParts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PcPartName,PcPartPrice,ReviewId,CategoryId,Id,DateCreated,DateUpdated,CreatedBy,UpdatedBy")] PcPart pcPart)
-        {
-            if (ModelState.IsValid)
+            if (id != pcpart.Id)
             {
-                _context.Add(pcPart);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(pcPart);
-        }
-
-        // GET: PcParts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.PcParts == null)
-            {
-                return NotFound();
+                return BadRequest();
             }
 
-            var pcPart = await _context.PcParts.FindAsync(id);
-            if (pcPart == null)
-            {
-                return NotFound();
-            }
-            return View(pcPart);
-        }
+            _unitOfWork.PcParts.Update(pcpart);
 
-        // POST: PcParts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PcPartName,PcPartPrice,ReviewId,CategoryId,Id,DateCreated,DateUpdated,CreatedBy,UpdatedBy")] PcPart pcPart)
-        {
-            if (id != pcPart.Id)
+            try
             {
-                return NotFound();
+                await _unitOfWork.Save(HttpContext);
             }
-
-            if (ModelState.IsValid)
+            catch (DbUpdateConcurrencyException)
             {
-                try
+                if (!await PcPartExists(id))
                 {
-                    _context.Update(pcPart);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!PcPartExists(pcPart.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(pcPart);
+
+            return NoContent();
         }
 
-        // GET: PcParts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // POST: api/PcParts
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<PcPart>> PostPcPart(PcPart pcpart)
         {
-            if (id == null || _context.PcParts == null)
-            {
-                return NotFound();
-            }
-
-            var pcPart = await _context.PcParts
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (pcPart == null)
-            {
-                return NotFound();
-            }
-
-            return View(pcPart);
-        }
-
-        // POST: PcParts/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.PcParts == null)
+            if (_unitOfWork.PcParts == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.PcParts'  is null.");
             }
-            var pcPart = await _context.PcParts.FindAsync(id);
-            if (pcPart != null)
-            {
-                _context.PcParts.Remove(pcPart);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            await _unitOfWork.PcParts.Insert(pcpart);
+            await _unitOfWork.Save(HttpContext);
+
+            return CreatedAtAction("GetPcPart", new { id = pcpart.Id }, pcpart);
         }
 
-        private bool PcPartExists(int id)
+        // DELETE: api/PcParts/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePcPart(int id)
         {
-          return (_context.PcParts?.Any(e => e.Id == id)).GetValueOrDefault();
+            if (_unitOfWork.PcParts == null)
+            {
+                return NotFound();
+            }
+            var pcpart = await _unitOfWork.PcParts.Get(g => g.Id == id);
+            if (pcpart == null)
+            {
+                return NotFound();
+            }
+
+            await _unitOfWork.PcParts.Delete(id);
+            await _unitOfWork.Save(HttpContext);
+
+            return NoContent();
+        }
+
+        // POST: api/PcParts
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Shared.Domain.CategoryPcPart>> AddCategoryPcPart(Shared.Domain.CategoryPcPart categoryPcPart)
+        {
+            if (_unitOfWork.CategoryPcParts == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.CategoryPcParts'  is null.");
+            }
+            await _unitOfWork.CategoryPcParts.Insert(categoryPcPart);
+            await _unitOfWork.Save(HttpContext);
+
+            return CreatedAtAction("GetPcPart", new { id = categoryPcPart.Id }, categoryPcPart);
+        }
+
+        private async Task<bool> PcPartExists(int id)
+        {
+            PcPart pcpart = await _unitOfWork.PcParts.Get(e => e.Id == id);
+            return pcpart != null;
         }
     }
 }

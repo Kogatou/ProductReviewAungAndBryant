@@ -13,33 +13,33 @@ namespace ProductReviewAungAndBryant.Server.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class CategoryPcPartController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public CategoriesController(IUnitOfWork unitOfWork)
+        public CategoryPcPartController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        // GET: api/Categories
+        // GET: api/CategoryPcPart
         [HttpGet]
-        //[Route("GetCategories")]
-        public async Task<IActionResult> GetCategories()
+        //[Route("GetCategoryPcPart")]
+        public async Task<IActionResult> GetCategoryPcPart()
         {
-            var Categories = await _unitOfWork.Categories.GetAll();
-            return Ok(Categories);
+            var CategoryPcPart = await _unitOfWork.CategoryPcPart.GetAll();
+            return Ok(CategoryPcPart);
         }
 
-        // GET: api/Categories/5
+        // GET: api/CategoryPcPart/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
-            if (_unitOfWork.Categories == null)
+            if (_unitOfWork.CategoryPcPart == null)
             {
                 return NotFound();
             }
-            var Category = await _unitOfWork.Categories.Get(g => g.Id == id);
+            var Category = await _unitOfWork.CategoryPcPart.Get(g => g.Id == id);
 
             if (Category == null)
             {
@@ -49,7 +49,7 @@ namespace ProductReviewAungAndBryant.Server.Controllers
             return Category;
         }
 
-        // PUT: api/Categories/5
+        // PUT: api/CategoryPcPart/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategory(int id, Category category)
@@ -59,7 +59,7 @@ namespace ProductReviewAungAndBryant.Server.Controllers
                 return BadRequest();
             }
 
-            _unitOfWork.Categories.Update(category);
+            _unitOfWork.CategoryPcPart.Update(category);
 
             try
             {
@@ -80,36 +80,36 @@ namespace ProductReviewAungAndBryant.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Categories
+        // POST: api/CategoryPcPart
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {
-            if (_unitOfWork.Categories == null)
+            if (_unitOfWork.CategoryPcPart == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Categories'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.CategoryPcPart'  is null.");
             }
-            await _unitOfWork.Categories.Insert(category);
+            await _unitOfWork.CategoryPcPart.Insert(category);
             await _unitOfWork.Save(HttpContext);
 
             return CreatedAtAction("GetCategory", new { id = category.Id }, category);
         }
 
-        // DELETE: api/Categories/5
+        // DELETE: api/CategoryPcPart/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            if (_unitOfWork.Categories == null)
+            if (_unitOfWork.CategoryPcPart == null)
             {
                 return NotFound();
             }
-            var Category = await _unitOfWork.Categories.Get(g => g.Id == id);
+            var Category = await _unitOfWork.CategoryPcPart.Get(g => g.Id == id);
             if (Category == null)
             {
                 return NotFound();
             }
 
-            await _unitOfWork.Categories.Delete(id);
+            await _unitOfWork.CategoryPcPart.Delete(id);
             await _unitOfWork.Save(HttpContext);
 
             return NoContent();
@@ -117,7 +117,7 @@ namespace ProductReviewAungAndBryant.Server.Controllers
 
         private async Task<bool> CategoryExists(int id)
         {
-            Category Category = await _unitOfWork.Categories.Get(e => e.Id == id);
+            Category Category = await _unitOfWork.CategoryPcPart.Get(e => e.Id == id);
             return Category != null;
         }
     }

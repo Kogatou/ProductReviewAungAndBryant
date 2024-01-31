@@ -18,8 +18,8 @@ namespace ProductReviewAungAndBryant.Shared.Domain
 
         public int ReviewerId { get; set; }
 
-        public virtual PcPart PcPart { get; set; }
+        public virtual PcPart? PcPart { get; set; }
 
-        public virtual Reviewer Reviewer { get; set; }
+        public virtual Reviewer? Reviewer { get; set; }
     }
 }

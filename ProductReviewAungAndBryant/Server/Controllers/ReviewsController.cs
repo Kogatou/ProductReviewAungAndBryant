@@ -6,42 +6,40 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProductReviewAungAndBryant.Server.Data;
+using ProductReviewAungAndBryant.Server.IRepository;
 using ProductReviewAungAndBryant.Shared.Domain;
 
 namespace ProductReviewAungAndBryant.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ReviewsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ReviewsController(ApplicationDbContext context)
+        public ReviewsController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/Reviews
         [HttpGet]
         //[Route("GetReviews")]
-        public async Task<ActionResult<IEnumerable<Review>>> Get()
+        public async Task<IActionResult> GetReviews()
         {
-          if (_context.Reviews == null)
-          {
-              return NotFound();
-          }
-            return await _context.Reviews.ToListAsync();
+            var reviews = await _unitOfWork.Reviews.GetAll();
+            return Ok(reviews);
         }
 
         // GET: api/Reviews/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Review>> Get(int id)
+        public async Task<ActionResult<Review>> GetReview(int id)
         {
-          if (_context.Reviews == null)
-          {
-              return NotFound();
-          }
-            var review = await _context.Reviews.FindAsync(id);
+            if (_unitOfWork.Reviews == null)
+            {
+                return NotFound();
+            }
+            var review = await _unitOfWork.Reviews.Get(g => g.Id == id);
 
             if (review == null)
             {
@@ -61,15 +59,15 @@ namespace ProductReviewAungAndBryant.Server.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(review).State = EntityState.Modified;
+            _unitOfWork.Reviews.Update(review);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _unitOfWork.Save(HttpContext);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ReviewExists(id))
+                if (!await ReviewExists(id))
                 {
                     return NotFound();
                 }
@@ -87,12 +85,12 @@ namespace ProductReviewAungAndBryant.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Review>> PostReview(Review review)
         {
-          if (_context.Reviews == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Reviews'  is null.");
-          }
-            _context.Reviews.Add(review);
-            await _context.SaveChangesAsync();
+            if (_unitOfWork.Reviews == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Reviews'  is null.");
+            }
+            await _unitOfWork.Reviews.Insert(review);
+            await _unitOfWork.Save(HttpContext);
 
             return CreatedAtAction("GetReview", new { id = review.Id }, review);
         }
@@ -101,25 +99,26 @@ namespace ProductReviewAungAndBryant.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReview(int id)
         {
-            if (_context.Reviews == null)
+            if (_unitOfWork.Reviews == null)
             {
                 return NotFound();
             }
-            var review = await _context.Reviews.FindAsync(id);
+            var review = await _unitOfWork.Reviews.Get(g => g.Id == id);
             if (review == null)
             {
                 return NotFound();
             }
 
-            _context.Reviews.Remove(review);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.Reviews.Delete(id);
+            await _unitOfWork.Save(HttpContext);
 
             return NoContent();
         }
 
-        private bool ReviewExists(int id)
+        private async Task<bool> ReviewExists(int id)
         {
-            return (_context.Reviews?.Any(e => e.Id == id)).GetValueOrDefault();
+            Review review = await _unitOfWork.Reviews.Get(e => e.Id == id);
+            return review != null;
         }
     }
 }

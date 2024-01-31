@@ -24,6 +24,7 @@ namespace ProductReviewAungAndBryant.Server.Data
 
         public DbSet<Category> Categories { get; set; }
 
+        public DbSet<CategoryPcPart> CategoryPcParts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

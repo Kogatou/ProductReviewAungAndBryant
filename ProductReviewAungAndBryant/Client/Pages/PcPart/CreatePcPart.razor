@@ -1,0 +1,43 @@
+﻿@page "/pcparts/create"
+
+@using PcPartModel = ProductReviewAungAndBryant.Shared.Domain
+@using ProductReviewAungAndBryant.Client.Static
+@inject NavigationManager _navManager
+@inject HttpClient _client
+
+<h3>Add PcPart</h3>
+
+<EditForm Model="pcpart">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label>PcPart Name: </label>
+        <div>
+            <InputText @bind-Value="pcpart.PcPartName" class="form-control" />
+            <ValidationMessage For="@(() => pcpart.PcPartName)" />
+        </div>
+    </div>
+    <div class="form-group mt-3">
+        <label>PcPartPrice: </label>
+        <div>
+            <InputNumber @bind-Value="pcpart.PcPartPrice" class="form-control" />
+            <ValidationMessage For="@(() => pcpart.PcPartPrice)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3" @onclick="()=>Save()">
+        @ButtonText
+    </button>
+</EditForm>
+
+@code {
+    private PcPartModel.PcPart pcpart = new PcPartModel.PcPart();
+    public string ButtonText { get; set; } = "Save Category";
+
+    async Task Save()
+    {
+        pcpart.CreatedBy = "Admin";
+        await _client.PostAsJsonAsync($"{Endpoints.PcPartsEndpoint}/PostPcPart", pcpart);
+        _navManager.NavigateTo("/pcparts/");
+    }
+}

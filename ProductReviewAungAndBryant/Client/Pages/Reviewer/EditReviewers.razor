@@ -1,11 +1,11 @@
-﻿@page "/categories/create"
+﻿@page "/categories/edit/{id:int}"
 
 @using CategoryModel = ProductReviewAungAndBryant.Shared.Domain
 @using ProductReviewAungAndBryant.Client.Static
 @inject NavigationManager _navManager
 @inject HttpClient _client
 
-<h3>Add Category</h3>
+<h3>Edit Category</h3>
 
 <EditForm Model="categoryModel">
     <DataAnnotationsValidator />
@@ -25,19 +25,36 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-success mt-3" @onclick="()=>Save()">
+    <button type="submit" class="btn btn-success mt-3" @onclick="()=>Edit()">
         @ButtonText
-    </button>/
+    </button>
 </EditForm>
 
 @code {
-    private CategoryModel.Category categoryModel = new CategoryModel.Category();
-    public string ButtonText { get; set; } = "Save Category";
 
-    async Task Save()
+    [Parameter]
+    public int id { get; set; }
+
+    private CategoryModel.Category categoryModel = new CategoryModel.Category();
+    public string ButtonText { get; set; } = "Update Category";
+
+    protected override async Task OnInitializedAsync()
     {
-        categoryModel.CreatedBy = "Admin";
-        await _client.PostAsJsonAsync($"{Endpoints.CategoriesEndpoint}/PostCategory", categoryModel);
-        _navManager.NavigateTo("/categories/");
+        try
+        {
+            categoryModel = await _client.GetFromJsonAsync<CategoryModel.Category>($"{Endpoints.CategoriesEndpoint}/GetCategory/{id}");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+    async Task Edit()
+    {
+        categoryModel.CreatedBy = "11";
+        categoryModel.UpdatedBy = "11";
+        await _client.PutAsJsonAsync($"{Endpoints.CategoriesEndpoint}/PutCategory/{id}", categoryModel);
+        _navManager.NavigateTo("/Categories/");
     }
 }

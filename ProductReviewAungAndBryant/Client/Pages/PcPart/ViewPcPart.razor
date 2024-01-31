@@ -1,0 +1,51 @@
+﻿@page "/pcparts/view/{id:int}"
+
+@using PcPartModel = ProductReviewAungAndBryant.Shared.Domain
+@using ProductReviewAungAndBryant.Client.Static
+
+@inject NavigationManager _navManager
+@inject HttpClient _client
+
+<h3>View PcPart </h3>
+<div class="form-group">
+    <label>PcPart Name: </label>
+    <div>
+        <InputText @bind-Value="pcpartModel.PcPartName" class="form-control" />
+    </div>
+</div>
+<div class="form-group mt-3">
+    <label>Category Brand Name: </label>
+    <div>
+        <InputNumber @bind-Value="pcpartModel.PcPartPrice" class="form-control" />
+    </div>
+</div>
+
+<button type="button" class="btn btn-success mt-3" @onclick="()=>Back()">
+    @ButtonText
+</button>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+    public string ButtonText { get; set; } = "Back";
+
+    private PcPartModel.PcPart pcpartModel = new PcPartModel.PcPart();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            pcpartModel = await _client.GetFromJsonAsync<PcPartModel.PcPart>($"{Endpoints.PcPartsEndpoint}/GetPcPart/{id}");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+    async Task Back()
+    {
+        _navManager.NavigateTo("/pcparts/");
+    }
+}
+

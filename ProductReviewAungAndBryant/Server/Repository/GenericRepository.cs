@@ -1,8 +1,7 @@
 ﻿using ProductReviewAungAndBryant.Server.Data;
+using ProductReviewAungAndBryant.Server.IRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
-using ProductReviewAungAndBryant.Server.Data;
-using ProductReviewAungAndBryant.Server.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,19 +1,19 @@
-﻿@page "/categories"
+﻿@page "/pcparts"
 @inject NavigationManager _navManager
 @inject HttpClient _client
 @inject IJSRuntime js
 
-@using CategoryModel = ProductReviewAungAndBryant.Shared.Domain
+@using PcPartModel = ProductReviewAungAndBryant.Shared.Domain
 @using ProductReviewAungAndBryant.Client.Static
-<h3>Category</h3>
+<h3>PcPart</h3>
 
-<a href="/categories/create" class="btn btn-secondary">
+<a href="/pcparts/create" class="btn btn-secondary">
     <span class="oi oi-plus"></span>
-    New Category
+    New PcPart
 </a>
 <br />
 
-@if (categories == null)
+@if (pcparts == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -22,29 +22,35 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>CategoryName</th>
-                <th>CategoryBrandName</th>
+                <th>PcPartName</th>
+                <th>PcPartPrice</th>
                 <th>CreatedBy</th>
                 <th>UpdatedBy</th>
+                <th>Add Category</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var category in categories)
+            @foreach (var pcpart in pcparts)
             {
                 <tr>
-                    <td>@category.CategoryName</td>
-                    <td>@category.CategoryBrandName</td>
-                    <td>@category.CreatedBy</td>
-                    <td>@category.UpdatedBy</td>
+                    <td>@pcpart.PcPartName</td>
+                    <td>@pcpart.PcPartPrice</td>
+                    <td>@pcpart.CreatedBy</td>
+                    <td>@pcpart.UpdatedBy</td>
                     <td>
-                        <a href="categories/view/@category.Id" class="btn btn-primary">
+                        <a href="/pcparts/add-category/@pcpart.Id" class="btn btn-primary">
+                            <span >Add Category</span>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="pcparts/view/@pcpart.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>
                         </a>
-                        <a href="categories/edit/@category.Id" class="btn btn-primary">
+                        <a href="pcparts/edit/@pcpart.Id" class="btn btn-primary">
                             <span class="oi oi-pencil"></span>
                         </a>
-                        <button class="btn btn-danger" @onclick="@(()=> Delete(category.Id))">
+                        <button class="btn btn-danger" @onclick="@(()=> Delete(pcpart.Id))">
                             <span class="oi oi-delete"></span>
                         </button>
                     </td>
@@ -56,7 +62,7 @@ else
 }
 
 @code {
-    private List<CategoryModel.Category> categories = new List<CategoryModel.Category>();
+    private List<PcPartModel.PcPart> pcparts = new List<PcPartModel.PcPart>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -71,7 +77,7 @@ else
 
             // categories.Add(newCategory);
 
-            categories = await _client.GetFromJsonAsync<List<CategoryModel.Category>>($"{Endpoints.CategoriesEndpoint}/GetCategories");
+            pcparts = await _client.GetFromJsonAsync<List<PcPartModel.PcPart>>($"{Endpoints.PcPartsEndpoint}/GetPcParts");
         }
         catch (AccessTokenNotAvailableException exception)
         {
@@ -83,14 +89,14 @@ else
     {
         try
         {
-            if (categories != null)
+            if (pcparts != null)
             {
-                CategoryModel.Category category = categories.Where(w => w.Id == id).First();
+                PcPartModel.PcPart pcpart = pcparts.Where(w => w.Id == id).First();
 
-                var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete category - {category.CategoryBrandName}?");
+                var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete pcpart - {pcpart.PcPartName}?");
                 if (confirm)
                 {
-                    await _client.DeleteAsync($"{Endpoints.CategoriesEndpoint}/DeleteCategory/{id}");
+                    await _client.DeleteAsync($"{Endpoints.PcPartsEndpoint}/DeletePcPart/{id}");
                     await OnInitializedAsync();
                 }
             }
